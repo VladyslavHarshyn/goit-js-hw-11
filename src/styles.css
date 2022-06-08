@@ -1,5 +1,5 @@
 .search-form {
-    background-color: yellowgreen;
+    background-color: pink;
     padding: 20px;
     text-align: center;
 }
@@ -7,6 +7,7 @@
 .search-button {
     background-color: whitesmoke;
     color: black;
+    width: 10%;
 
     border: none;
     text-transform: uppercase;
@@ -14,7 +15,7 @@
 }
 
 .gallery-container {
-    padding: 30px 20px;
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,15 +29,15 @@
 .photo-card {
     width: 350px;
     margin-bottom: 20px;
-    border: 2px solid black;
+    border: 2px solid lightslategray;
+    border-radius: 20px;
 
-    animation-name: scale;
-    animation-duration: 0.8s
 }
 
 .info {
     display: flex;
     justify-content: space-around;
+    color: grey;
 }
     
 .info-item {
@@ -49,13 +50,14 @@
     
 .image-card {
     width: 100%;
-    height: 230px
+    height: 230px;
+    border-radius: 17px;
 }
     
 .load-more {
     width: 130px;
     height: 40px;
-    background-color: #5d5de2;
+    background-color: pink;
     color: white;
     
     visibility: hidden;
@@ -66,11 +68,6 @@
     text-transform: uppercase;
     box-shadow: 0px 5px 5px black;
     
-}
-    
-.load-more:hover {
-    transform: scale(1.1);
-    background-color: violet;
 }
     
 .load-more.is-hidden {

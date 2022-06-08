@@ -2,16 +2,37 @@ import { PixabayAPI } from './js/pixabay';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import superplaceholder from 'superplaceholder';
 
 const formEl = document.querySelector('#search-form');
 const galleryEl = document.querySelector('.gallery');
 const btnEl = document.querySelector('.load-more');
+const searchFormInput = document.querySelector('.search-form-input');
 
 const pixabayApi = new PixabayAPI();
 
-// Форма
+// не успел simplelightbox применить, ам соре
 
-const onSubmitForm = async event => {
+superplaceholder({
+  el: searchFormInput,
+  sentences: [
+    'Type smth cool to find.',
+    'Maybe lion?',
+    'Maybe dog?',
+    'You have a better idea?',
+  ],
+  options: {
+    letterDelay: 100,
+    sentenceDelay: 1000,
+    startOnFocus: false,
+    loop: true,
+    shuffle: false,
+    showCursor: true,
+    cursor: '|',
+  },
+});
+
+const inSearchForm = async event => {
   event.preventDefault();
   btnEl.classList.remove('is-hidden');
   galleryEl.innerHTML = '';
@@ -31,7 +52,7 @@ const onSubmitForm = async event => {
       return;
     }
 
-    addElement(data.hits);
+    addArrows(data.hits);
     btnEl.classList.add('is-hidden');
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
   } catch (error) {
@@ -39,8 +60,8 @@ const onSubmitForm = async event => {
   }
 };
 
-function addElement(data) {
-  const createElement = data
+function addArrows(data) {
+  const createArrows = data
     .map(
       el =>
         `<div class="photo-card">
@@ -63,12 +84,10 @@ function addElement(data) {
     )
     .join('');
 
-  galleryEl.insertAdjacentHTML('beforeend', createElement);
+  galleryEl.insertAdjacentHTML('beforeend', createArrows);
 }
 
-// Кнопка
-
-const onAddNewPages = async () => {
+const addNewPages = async () => {
   try {
     const { data } = await pixabayApi.searchImages();
     let totalPages = Math.ceil(data.totalHits / data.hits.length);
@@ -77,9 +96,9 @@ const onAddNewPages = async () => {
         "We're sorry, but you've reached the end of search results."
       );
       btnEl.style.display = 'none';
-      addElement(data.hits);
+      addArrows(data.hits);
     } else {
-      addElement(data.hits);
+      addArrows(data.hits);
 
       pixabayApi.addPages();
     }
@@ -88,5 +107,5 @@ const onAddNewPages = async () => {
   }
 };
 
-formEl.addEventListener('submit', onSubmitForm);
-btnEl.addEventListener('click', onAddNewPages);
+formEl.addEventListener('submit', inSearchForm);
+btnEl.addEventListener('click', addNewPages);
