@@ -34,7 +34,7 @@ superplaceholder({
 
 const inSearchForm = async event => {
   event.preventDefault();
-  btnEl.classList.remove('is-hidden');
+
   galleryEl.innerHTML = '';
 
   pixabayApi.q = event.currentTarget[0].value.trim();
@@ -50,11 +50,14 @@ const inSearchForm = async event => {
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
+    } else if (data.totalHits <= 40) {
+      addArrows(data.hits);
+      btnEl.style.display = 'none';
+    } else {
+      addArrows(data.hits);
+      btnEl.classList.add('is-hidden');
+      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
     }
-
-    addArrows(data.hits);
-    btnEl.classList.add('is-hidden');
-    Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
   } catch (error) {
     console.log(error);
   }
